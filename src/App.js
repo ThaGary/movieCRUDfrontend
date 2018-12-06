@@ -1,28 +1,26 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Movies from './movies.js';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+  constructor() {
+    super()
+    this.state = { 
+      movies : null 
+    }
   }
-}
+  async componentDidMount() {
+    fetch('https://garysmovies.herokuapp.com/')
+    .then(response => response.json())
+    .then(movies => this.setState({ movies }))
+  }
+    render() {
+        return ( 
+          <div className="movies" >
+            {this.state.movies ? <Movies movies={this.state.movies}/> : <div>Loading</div>}
+          </div>
+        );
+    }
+  }
 
 export default App;
