@@ -15,7 +15,7 @@ class App extends Component {
       poster: ""
     };
   }
-  async componentDidMount() {
+  componentDidMount() {
     fetch("https://garysmovies.herokuapp.com/")
       .then(response => response.json())
       .then(movies =>
@@ -44,7 +44,6 @@ class App extends Component {
       rating: formData.get("Rating"),
       poster: formData.get("poster")
     };
-    console.log(newMovie)
     return fetch("https://garysmovies.herokuapp.com/", {
       method: "POST",
       headers: {
@@ -83,7 +82,6 @@ class App extends Component {
       rating: formData.get("Rating"),
       poster: formData.get("poster")
     };
-    console.log(editedMovie)
     return fetch("https://garysmovies.herokuapp.com/" + editID, {
       method: "PUT",
       headers: {
@@ -93,15 +91,19 @@ class App extends Component {
       body: JSON.stringify(editedMovie)
     })
       .then(response => response.json())
-      .then(movies => {
+      .then(response => {
+        let movies = this.state.movies.filter(movie => {
+          return movie.id !== response[0].id;
+        });
         this.setState({
-          movies: [...this.state.movies, movies[0]]
+          movies: movies
         });
       });
   };
   render() {
     return (
       <div className="movies">
+      <h1>Gary's Movie List</h1>
         {this.state.info && (
           <div className="media">
             <img
